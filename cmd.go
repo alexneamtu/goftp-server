@@ -482,7 +482,7 @@ func (cmd commandMkd) Execute(conn *Conn, param string) {
 	path := conn.buildPath(param)
 	err := conn.driver.MakeDir(path)
 	if err == nil {
-		conn.writeMessage(257, "Directory created")
+		conn.writeMessage(257, fmt.Sprintf("\"%s\" Directory created",path))
 	} else {
 		conn.writeMessage(550, fmt.Sprintln("Action not taken:", err))
 	}
