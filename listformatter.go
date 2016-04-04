@@ -18,7 +18,6 @@ func (formatter listFormatter) Short() []byte {
 	for _, file := range formatter {
 		fmt.Fprintf(&buf, "%s\r\n", file.Name())
 	}
-	fmt.Fprintf(&buf, "\r\n")
 	return buf.Bytes()
 }
 
@@ -33,7 +32,6 @@ func (formatter listFormatter) Detailed() []byte {
 		fmt.Fprintf(&buf, strftime.Format(" %b %d %H:%M ", file.ModTime()))
 		fmt.Fprintf(&buf, "%s\r\n", file.Name())
 	}
-	fmt.Fprintf(&buf, "\r\n")
 	return buf.Bytes()
 }
 

@@ -42,6 +42,7 @@ var (
 		"EPSV": commandEpsv{},
 		//"FEAT": commandFeat{},
 		"LIST": commandList{},
+		"MLST": commandMlst{},
 		"NLST": commandNlst{},
 		"MDTM": commandMdtm{},
 		"MIC":  commandMic{},
@@ -361,6 +362,10 @@ func (cmd commandList) Execute(conn *Conn, param string) {
 	path := conn.buildPath(fpath)
 	info, err := conn.driver.Stat(path)
 	if err != nil {
+		if conn.dataConn != nil {
+		    conn.dataConn.Close()
+		    conn.dataConn = nil
+		}
 		conn.writeMessage(550, err.Error())
 		return
 	}
@@ -373,11 +378,56 @@ func (cmd commandList) Execute(conn *Conn, param string) {
 		return nil
 	})
 	if err != nil {
+		if conn.dataConn != nil {
+		    conn.dataConn.Close()
+		    conn.dataConn = nil
+		}
 		conn.writeMessage(550, err.Error())
 		return
 	}
 
 	conn.sendOutofbandData(listFormatter(files).Detailed())
+}
+
+// commandMlst responds to the MLST FTP command.
+type commandMlst struct{}
+
+func (cmd commandMlst) IsExtend() bool {
+	return true
+}
+
+func (cmd commandMlst) RequireParam() bool {
+	return false
+}
+
+func (cmd commandMlst) RequireAuth() bool {
+	return true
+}
+
+func (cmd commandMlst) Execute(conn *Conn, param string) {
+	var fpath string
+	if len(param) == 0 {
+		fpath = param
+	} else {
+		fields := strings.Fields(param)
+		for _, field := range fields {
+			fpath = field
+			break
+		}
+	}
+
+	path := conn.buildPath(fpath)
+	info, err := conn.driver.Stat(path)
+	if err != nil {
+		conn.writeMessage(550, err.Error())
+		return
+	}
+	ftype := "file"
+	if info.IsDir() {
+	    ftype = "dir"
+	}
+	conn.writeRawMessage(fmt.Sprintf("250-Start of list for %s\r\n modify=%s;size=%d;type=%s; %s\r\n250 End of list",
+	    fpath, info.ModTime().Format("20060102150405"), info.Size(), ftype, fpath))
 }
 
 // commandNlst responds to the NLST FTP command. It allows the client to

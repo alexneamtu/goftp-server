@@ -33,5 +33,9 @@ func (logger *Logger) PrintCommand(command string, params string) {
 }
 
 func (logger *Logger) PrintResponse(code int, message string) {
-	log.Printf("%s < %d %s", logger.sessionId, code, message)
+	if code < 0 {
+	    log.Printf("%s < RAW %s", logger.sessionId,  message)
+	} else {
+	    log.Printf("%s < %d %s", logger.sessionId, code, message)
+	}
 }
