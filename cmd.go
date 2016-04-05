@@ -224,7 +224,7 @@ func (cmd commandCwd) Execute(conn *Conn, param string) {
 		conn.namePrefix = path
 		conn.writeMessage(250, "Directory changed to "+path)
 	} else {
-		conn.writeMessage(550, fmt.Sprintln("Directory change to", path, "failed:", err))
+		conn.writeMessage(550, fmt.Sprintf("Directory change to %s failed: %s", path, err))
 	}
 }
 
@@ -250,7 +250,7 @@ func (cmd commandDele) Execute(conn *Conn, param string) {
 	if err == nil {
 		conn.writeMessage(250, "File deleted")
 	} else {
-		conn.writeMessage(550, fmt.Sprintln("File delete failed:", err))
+		conn.writeMessage(550, fmt.Sprintf("File delete failed: %s", err))
 	}
 }
 
@@ -534,7 +534,7 @@ func (cmd commandMkd) Execute(conn *Conn, param string) {
 	if err == nil {
 		conn.writeMessage(257, fmt.Sprintf("\"%s\" Directory created",path))
 	} else {
-		conn.writeMessage(550, fmt.Sprintln("Action not taken:", err))
+		conn.writeMessage(550, fmt.Sprintf("Action not taken: %s", err))
 	}
 }
 
@@ -790,7 +790,7 @@ func (cmd commandRest) Execute(conn *Conn, param string) {
 
 	conn.appendData = true
 
-	conn.writeMessage(350, fmt.Sprintln("Start transfer from", conn.lastFilePos))
+	conn.writeMessage(350, fmt.Sprintf("Start transfer from: %d", conn.lastFilePos))
 }
 
 // commandRnfr responds to the RNFR FTP command. It's the first of two commands
@@ -840,7 +840,7 @@ func (cmd commandRnto) Execute(conn *Conn, param string) {
 	if err == nil {
 		conn.writeMessage(250, "File renamed")
 	} else {
-		conn.writeMessage(550, fmt.Sprintln("Action not taken", err))
+		conn.writeMessage(550, fmt.Sprintf("Action not taken: %s", err))
 	}
 }
 
@@ -866,7 +866,7 @@ func (cmd commandRmd) Execute(conn *Conn, param string) {
 	if err == nil {
 		conn.writeMessage(250, "Directory deleted")
 	} else {
-		conn.writeMessage(550, fmt.Sprintln("Directory delete failed:", err))
+		conn.writeMessage(550, fmt.Sprintf("Directory delete failed: %s", err))
 	}
 }
 
@@ -1035,7 +1035,7 @@ func (cmd commandSize) Execute(conn *Conn, param string) {
 	stat, err := conn.driver.Stat(path)
 	if err != nil {
 		log.Printf("Size: error(%s)", err)
-		conn.writeMessage(450, fmt.Sprintln("path", path, "not found"))
+		conn.writeMessage(450, fmt.Sprintf("path %s not found", path))
 	} else {
 		conn.writeMessage(213, strconv.Itoa(int(stat.Size())))
 	}
@@ -1070,7 +1070,7 @@ func (cmd commandStor) Execute(conn *Conn, param string) {
 		msg := "OK, received " + strconv.Itoa(int(bytes)) + " bytes"
 		conn.writeMessage(226, msg)
 	} else {
-		conn.writeMessage(450, fmt.Sprintln("error during transfer:", err))
+		conn.writeMessage(450, fmt.Sprintf("error during transfer: %s", err))
 	}
 }
 
