@@ -363,8 +363,8 @@ func (cmd commandList) Execute(conn *Conn, param string) {
 	info, err := conn.driver.Stat(path)
 	if err != nil {
 		if conn.dataConn != nil {
-		    conn.dataConn.Close()
-		    conn.dataConn = nil
+			conn.dataConn.Close()
+			conn.dataConn = nil
 		}
 		conn.writeMessage(550, err.Error())
 		return
@@ -379,8 +379,8 @@ func (cmd commandList) Execute(conn *Conn, param string) {
 	})
 	if err != nil {
 		if conn.dataConn != nil {
-		    conn.dataConn.Close()
-		    conn.dataConn = nil
+			conn.dataConn.Close()
+			conn.dataConn = nil
 		}
 		conn.writeMessage(550, err.Error())
 		return
@@ -424,10 +424,10 @@ func (cmd commandMlst) Execute(conn *Conn, param string) {
 	}
 	ftype := "file"
 	if info.IsDir() {
-	    ftype = "dir"
+		ftype = "dir"
 	}
 	conn.writeRawMessage(fmt.Sprintf("250-Start of list for %s\r\n modify=%s;size=%d;type=%s; %s\r\n250 End of list",
-	    fpath, info.ModTime().Format("20060102150405"), info.Size(), ftype, fpath))
+		fpath, info.ModTime().Format("20060102150405"), info.Size(), ftype, fpath))
 }
 
 // commandNlst responds to the NLST FTP command. It allows the client to
@@ -532,7 +532,7 @@ func (cmd commandMkd) Execute(conn *Conn, param string) {
 	path := conn.buildPath(param)
 	err := conn.driver.MakeDir(path)
 	if err == nil {
-		conn.writeMessage(257, fmt.Sprintf("\"%s\" Directory created",path))
+		conn.writeMessage(257, fmt.Sprintf("\"%s\" Directory created", path))
 	} else {
 		conn.writeMessage(550, fmt.Sprintf("Action not taken: %s", err))
 	}

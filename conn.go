@@ -122,7 +122,7 @@ func (Conn *Conn) writeMessage(code int, message string) (wrote int, err error) 
 
 func (Conn *Conn) writeRawMessage(message string) (wrote int, err error) {
 	Conn.logger.PrintResponse(-1, message)
-	wrote, err = Conn.controlWriter.WriteString(message+"\r\n")
+	wrote, err = Conn.controlWriter.WriteString(message + "\r\n")
 	Conn.controlWriter.Flush()
 	return
 }
