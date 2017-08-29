@@ -7,11 +7,11 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	mrand "math/rand"
 	"net"
 	"path/filepath"
 	"strconv"
 	"strings"
-	mrand "math/rand"
 )
 
 const (
@@ -53,7 +53,6 @@ func (conn *Conn) PassivePort() int {
 	// let system automatically chose one port
 	return 0
 }
-
 
 // returns a random 20 char string that can be used as a unique session ID
 func newSessionId() string {

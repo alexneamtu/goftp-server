@@ -645,7 +645,7 @@ func (cmd commandPasv) Execute(conn *Conn, param string) {
 		conn.writeMessage(425, "Data connection failed")
 		return
 	}
-	socket, err := newPassiveSocket(parts[0], conn.logger)
+	socket, err := newPassiveSocket(parts[0], conn.PassivePort(), conn.logger)
 	if err != nil {
 		conn.writeMessage(425, "Data connection failed")
 		return
