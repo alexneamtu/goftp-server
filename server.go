@@ -96,6 +96,7 @@ func serverOptsWithDefaults(opts *ServerOpts) *ServerOpts {
 	newOpts.TLS = opts.TLS
 	newOpts.KeyFile = opts.KeyFile
 	newOpts.CertFile = opts.CertFile
+	newOpts.PassivePorts = opts.PassivePorts
 
 	return &newOpts
 }
