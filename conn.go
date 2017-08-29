@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	mrand "math/rand"
 )
 
 const (
@@ -34,6 +35,25 @@ type Conn struct {
 	lastFilePos   int64
 	appendData    bool
 }
+
+func (conn *Conn) PassivePort() int {
+	if len(conn.server.PassivePorts) > 0 {
+		portRange := strings.Split(conn.server.PassivePorts, "-")
+
+		if len(portRange) != 2 {
+			conn.logger.Print("empty port\n")
+			return 0
+		}
+
+		minPort, _ := strconv.Atoi(strings.TrimSpace(portRange[0]))
+		maxPort, _ := strconv.Atoi(strings.TrimSpace(portRange[1]))
+
+		return minPort + mrand.Intn(maxPort-minPort)
+	}
+	// let system automatically chose one port
+	return 0
+}
+
 
 // returns a random 20 char string that can be used as a unique session ID
 func newSessionId() string {

@@ -27,6 +27,9 @@ type ServerOpts struct {
 	// "::", which means all hostnames on ipv4 and ipv6.
 	Hostname string
 
+	// Passive ports
+	PassivePorts string
+
 	// The port that the FTP should listen on. Optional, defaults to 3000. In
 	// a production environment you will probably want to change this to 21.
 	Port int

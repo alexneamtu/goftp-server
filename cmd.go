@@ -315,7 +315,7 @@ func (cmd commandEpsv) Execute(conn *Conn, param string) {
 		return
 	}
 
-	socket, err := newPassiveSocket(addr.String()[:lastIdx], conn.logger)
+	socket, err := newPassiveSocket(addr.String()[:lastIdx], conn.PassivePort(), conn.logger)
 	if err != nil {
 		log.Error(err)
 		conn.writeMessage(425, "Data connection failed")

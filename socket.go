@@ -83,12 +83,13 @@ type ftpPassiveSocket struct {
 	wg      sync.WaitGroup
 }
 
-func newPassiveSocket(host string, logger *Logger) (DataSocket, error) {
+func newPassiveSocket(host string, port int, logger *Logger) (DataSocket, error) {
 	socket := new(ftpPassiveSocket)
 	socket.ingress = make(chan []byte)
 	socket.egress = make(chan []byte)
 	socket.logger = logger
 	socket.host = host
+	socket.port = port
 	if err := socket.GoListenAndServe(); err != nil {
 		return nil, err
 	}
