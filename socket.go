@@ -127,7 +127,7 @@ func (socket *ftpPassiveSocket) Close() error {
 }
 
 func (socket *ftpPassiveSocket) GoListenAndServe() (err error) {
-	laddr, err := net.ResolveTCPAddr("tcp", "0.0.0.0:0")
+	laddr, err := net.ResolveTCPAddr("tcp", net.JoinHostPort("", strconv.Itoa(socket.port)))
 	if err != nil {
 		socket.logger.Print(err)
 		return
